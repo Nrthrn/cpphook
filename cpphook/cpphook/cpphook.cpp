@@ -6,12 +6,25 @@
 #include <sstream>
 #include <conio.h>
 #include <string>
-#include <Lmcons.h>    // For UNLEN and MAX_COMPUTERNAME_LENGTH
+#include <Lmcons.h>
+#include <cstdlib>
+#include <ctime>
 
 #pragma comment(lib, "ws2_32.lib")
 
 namespace var {
     int input = 0;
+}
+
+std::string generateFakeIP() {
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    int octet1 = std::rand() % 256;
+    int octet2 = std::rand() % 256;
+    int octet3 = std::rand() % 256;
+    int octet4 = std::rand() % 256;
+
+    // Format the IP address
+    return std::to_string(octet1) + "." + std::to_string(octet2) + "." + std::to_string(octet3) + "." + std::to_string(octet4);
 }
 
 std::string getUserAndComputerName() {
@@ -113,7 +126,14 @@ void menu() {
                    :              `.
                     `.              `.     .
                       `'`'`'`---..,___`;.-'
+
+            -----------_Usefull_-------------
+
             [1] Read Mem      [2] Device Info
+    
+            -----------_Useless_-------------
+
+            [3] Fake IP Gen   [4] Placeholder
 
             Input: )";
 
@@ -148,8 +168,9 @@ void menu() {
         std::string user = getUserAndComputerName();
 
         std::string info = R"(
-                    .-.                        USER: )" + user + R"(
-               .'   `.                         IP: )" + ip + R"(
+                CPPHook
+                     .-.                        USER: )" + user + R"(
+               .'   `.                          IP: )" + ip + R"(
                :g g   :
                : o    `.
               :         ``.
@@ -164,6 +185,17 @@ void menu() {
             )";
 
         std::cout << info;
+        std::cout << "\nPress enter to continue..." << std::endl;
+        while (_getch() != '\r');
+        system("cls");
+        menu();
+        break;
+    }
+    case 3: {
+        system("cls");
+
+        std::cout << "Fake IP: " << generateFakeIP() << "\n";
+
         std::cout << "\nPress enter to continue..." << std::endl;
         while (_getch() != '\r');
         system("cls");
